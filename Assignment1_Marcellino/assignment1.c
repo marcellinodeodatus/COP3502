@@ -6,31 +6,36 @@ This program is written by: Deodatus Marcellino */
 
 #define SIZE 50
 
-typedef struct monster {
+typedef struct monster
+{
     char *name;
     char *element;
     int population;
 } monster;
 
-typedef struct region {
+typedef struct region
+{
     char *name;
     int nmonsters;
     int total_population;
     monster **monsters;
 } region;
 
-typedef struct itinerary {
+typedef struct itinerary
+{
     int nregions;
     region **regions;
     int captures;
 } itinerary;
 
-typedef struct trainer {
+typedef struct trainer
+{
     char *name;
     itinerary *visits;
 } trainer;
 
- monster * createMonster(char* name, char* element, int population) {
+monster *createMonster(char *name, char *element, int population)
+{
     monster *temp = malloc(sizeof(monster));
     strcpy(temp->name, name);
     strcpy(temp->element, element);
@@ -38,7 +43,8 @@ typedef struct trainer {
     return temp;
 } // end createMonster
 
-monster ** readMonsters(FILE *in, int *mCount){
+monster **readMonsters(FILE *in, int *mCount)
+{
     char tempString[11];
     char tempName[SIZE];
     char tempElement[SIZE];
@@ -48,15 +54,16 @@ monster ** readMonsters(FILE *in, int *mCount){
 
     in = fopen("in.txt", "r");
     fscanf(in, "%d", mCount);
-    fscanf(in,"%s", tempString);
-    
+    fscanf(in, "%s", tempString);
+
     // allocate memory to create mCount number of monsters array
-    monster ** myMonsters = malloc(*mCount * sizeof(monster*));
+    monster **myMonsters = malloc(*mCount * sizeof(monster *));
     // Scan for the monsters information
-    for(int i = 0; i < *mCount; i++){
-        fscanf(in, "%s %s %d",tempName,tempElement,&tempPopulation);
+    for (int i = 0; i < *mCount; i++)
+    {
+        fscanf(in, "%s %s %d", tempName, tempElement, &tempPopulation);
         myMonsters[i] = createMonster(*tempName, *tempElement, tempPopulation);
-       /*  lengthName = strlen(tempName);
+        /*  lengthName = strlen(tempName);
         lengthElement = strlen(tempElement);
         myMonsters[i].name = (char*)malloc(sizeof(char)*(lengthName+1));
         myMonsters[i].element = (char*)malloc(sizeof(char)*(lengthElement+1));
@@ -67,19 +74,21 @@ monster ** readMonsters(FILE *in, int *mCount){
     }
 
     // free the memory
-    for (int i = 0; i < *mCount; i++){
+    for (int i = 0; i < *mCount; i++)
+    {
         free(myMonsters[i]);
     }
     return myMonsters;
 } // end readMonsters
 
-int main() {
-// atexit(report_mem_leak);
-FILE* in = fopen("in.txt", "r"); // read from FILE
-int mCount, rCount, tCount, trCount;
+int main()
+{
+    // atexit(report_mem_leak);
+    FILE *in = fopen("in.txt", "r"); // read from FILE
+    int mCount, rCount, tCount, trCount;
 
-monster ** monsters = readMonsters(in, &mCount);
-free(monsters);
-fclose(in)
+    monster **monsters = readMonsters(in, &mCount);
+    free(monsters);
+    fclose(in);
 
 } // end main
